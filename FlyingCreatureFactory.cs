@@ -10,7 +10,7 @@ namespace WinFormsApp1
     {
         public override LivingCreature Create(int hp, int level)
         {
-            return new FlyingcCreature(hp, level, 0);
+            return new FlyingCreature(hp, level, 0);
         }
     }
 }

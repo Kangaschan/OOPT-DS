@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WinFormsApp1
 {
+    [Serializable]
+    [DataContract]
     public class Treant : LivingCreature
     {
+        [DataMember]
         private int height;
         public Treant(int hp, int level, int height) : base(hp, level)
         {
             this.height = height;
         }
+        public Treant() : base()
+        {
+            this.height = 1;
+        }
+        
         private void grow()
         {
             this.HPinLVL += 2;

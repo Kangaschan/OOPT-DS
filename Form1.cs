@@ -1,32 +1,37 @@
+using OOTP;
 using System.Collections;
 using System.Drawing.Text;
+using System.Net.Http.Headers;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using WinFormsApp1;
 
 
 namespace WinFormsApp1
 {
 
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private bool click = false;
         private void DrawArr()
         {
             GFX.FillRectangle(Brushes.White, new RectangleF(0, 0, picBox.Width, picBox.Height));
-            for (int i = 0; i < ind; i++)
+            for (int i = 0; i < arr.Count; i++)
             {
                 GFX.DrawImage(image: arr[i].self.DrawitSelf(), point: new Point(arr[i].X, arr[i].Y));
             }
         }
+        private string filenameXML = "creatures.xml";
+        private string filenameBIN = "creatures.bin";
         private Factory fact;
-        private Coord[] arr;
+        public List<Coord> arr;
         private int ind, clickind;
         private Point clickPoint;
         private Graphics GFX;
-        public Form1()
+        public MainForm()
         {
-
-            arr = new Coord[10];
+            HookManager.SetHook();
+            arr = new List<Coord>();
             ind = 0;
             InitializeComponent();
             GFX = picBox.CreateGraphics();
@@ -40,7 +45,7 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int i = 00; i < arr.Length; i++)
+            for (int i = 00; i < arr.Count; i++)
             {
                 if (arr[i] != null)
                     arr[i].self.incLevel(10);
@@ -52,7 +57,8 @@ namespace WinFormsApp1
         {
             if (fact != null)
             {
-                arr[ind++] = new Coord(fact.Create(1, 1), 0, 0);
+                // arr[ind++] = new Coord(fact.Create(1, 1), 0, 0);
+                arr.Add(new Coord(fact.Create(1, 1), 0, 0));
                 DrawArr();
             }
             else
@@ -88,7 +94,7 @@ namespace WinFormsApp1
         {
             if (click == false)
             {
-                for (int i = 0; i < ind; i++)
+                for (int i = 0; i < arr.Count; i++)
                 {
                     if (e.X >= arr[i].X && e.X <= (arr[i].X + Coord.width))
                     {
@@ -103,10 +109,94 @@ namespace WinFormsApp1
             }
             else
             {
-                arr[clickind].X = e.X - Coord.width/2;
-                arr[clickind].Y = e.Y - Coord.height/2;
+                arr[clickind].X = e.X - Coord.width / 2;
+                arr[clickind].Y = e.Y - Coord.height / 2;
                 click = false;
                 DrawArr();
+            }
+        }
+
+    
+        private void picBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int clickind = -1;
+            for (int i = 0; i < arr.Count; i++)
+            {
+                if (e.X >= arr[i].X && e.X <= (arr[i].X + Coord.width))
+                {
+                    if (e.Y >= arr[i].Y && e.Y <= (arr[i].Y + Coord.height))
+                    {
+                        clickind = i;
+                    }
+                }
+            }
+            if (clickind != -1)
+            {
+                List<TFormBuildInfo> Ltest = new List<TFormBuildInfo>();
+                Ltest = arr[clickind].self.GetParams();
+
+                FormObjChange Ftest = new FormObjChange(Ltest);
+                Ftest.ShowDialog();
+                Ltest = Ftest.UpdatedList;
+
+                arr[clickind].self.SetParams(Ltest);
+                DrawArr();
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали обьект");
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            LivingCreature[] creatures = new LivingCreature[0];
+            if (cmbBoxSerr.SelectedIndex != -1)
+            {
+                if (cmbBoxSerr.SelectedIndex == 0)
+                {
+                    creatures = MySerializer.DeserializeXml(filenameXML);
+                }
+                if (cmbBoxSerr.SelectedIndex == 1)
+                {
+                    creatures = MySerializer.DeserializeObject<LivingCreature[]>(filenameBIN);
+                }
+                for (int i = 0; i < creatures.Length;i++)
+                {
+                    arr.Add(new Coord(creatures[i], 0, 0));
+                }
+                DrawArr();
+            }
+            else
+            {
+                MessageBox.Show("Вы не вырбали способ");
+            }
+        }
+
+        private void btnSurerealize_Click(object sender, EventArgs e)
+        {
+            if (cmbBoxSerr.SelectedIndex != -1)
+            {
+                LivingCreature[] serrArr = new LivingCreature[arr.Count];
+                for (int i = 0; i < arr.Count; i++)
+                {
+                    serrArr[i] = new Human();
+                    serrArr[i] = arr[i].self;
+                }
+
+                if (cmbBoxSerr.SelectedIndex == 0)
+                {
+                    MySerializer.SerializeXml(filenameXML, serrArr);
+                }
+                if (cmbBoxSerr.SelectedIndex == 1)
+                {
+                    MySerializer.SerializeObject(obj: serrArr, filenameBIN);
+                }
+                
+                }
+            else
+            {
+                MessageBox.Show("Вы не вырбали способ");
             }
         }
     }

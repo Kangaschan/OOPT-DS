@@ -1,17 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WinFormsApp1
 {
-    public class FlyingcCreature : LivingCreature
+    [Serializable]
+    [DataContract]
+    public class FlyingCreature : LivingCreature
     {
-        protected int range;
-        public FlyingcCreature(int hp, int level, int range) : base(hp, level)
+        [DataMember]
+        public int range;
+ 
+        
+        public FlyingCreature(int hp, int level, int range) : base(hp, level)
         {
             this.range = range;
+        }
+        public FlyingCreature():base() 
+        {
+            this.range=1;
         }
         public Point fly()
         {

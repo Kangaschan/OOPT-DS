@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,8 +15,11 @@ namespace WinFormsApp1
         lightning,
         air
     }
-    public class Dragon : FlyingcCreature
+    [Serializable]
+    [DataContract]
+    public class Dragon : FlyingCreature
     {
+        [DataMember]
         private TElement element;
         public override void fSetLVL(int value)
         {
@@ -54,6 +58,10 @@ namespace WinFormsApp1
             this.HPinLVL = 100;
             this.level = level;
             this.hp = hp;
+        }
+        public Dragon()  : base()
+        {
+
         }
         public override Bitmap DrawitSelf()
         {
