@@ -56,7 +56,6 @@
 
             private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
             {
-                // Код клавиши, которая была нажата
                 int keyCode = Marshal.ReadInt32(lParam);
 
                 if (nCode >= 0 && (Keys)keyCode == Keys.F4 && Control.ModifierKeys == Keys.Alt)

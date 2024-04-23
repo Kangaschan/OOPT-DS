@@ -35,8 +35,7 @@ namespace OOTP
             }
         }
 
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        public static void SerializeObject<T>(T obj, string filename)
+        public static void SerializeBin<T>(T obj, string filename)
         {
 
             if (obj == null)
@@ -60,8 +59,7 @@ namespace OOTP
            
         }
 
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        public static T DeserializeObject<T>(string filename)
+        public static T DeserializeBin<T>(string filename)
         {
             try
             {

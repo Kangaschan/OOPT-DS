@@ -159,11 +159,11 @@ namespace WinFormsApp1
                 }
                 if (cmbBoxSerr.SelectedIndex == 1)
                 {
-                    creatures = MySerializer.DeserializeObject<LivingCreature[]>(filenameBIN);
+                    creatures = MySerializer.DeserializeBin<LivingCreature[]>(filenameBIN);
                 }
                 for (int i = 0; i < creatures.Length;i++)
                 {
-                    arr.Add(new Coord(creatures[i], 0, 0));
+                    arr.Add(new Coord(creatures[i], i*210, 0));
                 }
                 DrawArr();
             }
@@ -190,7 +190,7 @@ namespace WinFormsApp1
                 }
                 if (cmbBoxSerr.SelectedIndex == 1)
                 {
-                    MySerializer.SerializeObject(obj: serrArr, filenameBIN);
+                    MySerializer.SerializeBin(obj: serrArr, filenameBIN);
                 }
                 
                 }

@@ -86,7 +86,7 @@
             btnDessurerealize.Name = "btnDessurerealize";
             btnDessurerealize.Size = new Size(150, 29);
             btnDessurerealize.TabIndex = 4;
-            btnDessurerealize.Text = "Дессюреализовать";
+            btnDessurerealize.Text = "Десериализовать";
             btnDessurerealize.UseVisualStyleBackColor = true;
             btnDessurerealize.Click += button1_Click_1;
             // 
@@ -96,7 +96,7 @@
             btnSurerealize.Name = "btnSurerealize";
             btnSurerealize.Size = new Size(150, 29);
             btnSurerealize.TabIndex = 5;
-            btnSurerealize.Text = "Сюрреализовать";
+            btnSurerealize.Text = "Сериализовать";
             btnSurerealize.UseVisualStyleBackColor = true;
             btnSurerealize.Click += btnSurerealize_Click;
             // 
